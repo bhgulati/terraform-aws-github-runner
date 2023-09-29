@@ -7,7 +7,10 @@ locals {
 resource "aws_apigatewayv2_api" "webhook" {
   name          = "${var.prefix}-github-action-webhook"
   protocol_type = "HTTP"
-  tags          = var.tags
+  tags = merge(var.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "d1b322f8-689d-4c80-a282-0d283ff2bc08"
+  })
 }
 
 resource "aws_apigatewayv2_route" "webhook" {
@@ -36,7 +39,10 @@ resource "aws_apigatewayv2_stage" "webhook" {
       format          = access_log_settings.value.format
     }
   }
-  tags = var.tags
+  tags = merge(var.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "aa95ad65-0b8c-47f3-bb19-75b91bd20016"
+  })
 }
 
 resource "aws_apigatewayv2_integration" "webhook" {

@@ -16,6 +16,8 @@ module "vpc" {
 
   tags = {
     Environment = local.environment
+    git_repo    = "terraform-aws-github-runner"
+    yor_trace   = "b9d96623-545c-404d-988f-529dd5b9e20a"
   }
 
 }

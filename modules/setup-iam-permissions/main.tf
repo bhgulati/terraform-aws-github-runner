@@ -8,6 +8,10 @@ resource "aws_iam_role" "deploy" {
     account_id    = var.account_id
     aws_partition = var.aws_partition
   })
+  tags = {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "af62e548-2266-4e9d-a118-d80292f85681"
+  }
 }
 
 resource "aws_iam_policy" "boundary" {
@@ -19,6 +23,10 @@ resource "aws_iam_policy" "boundary" {
     account_id     = data.aws_caller_identity.current.account_id
     aws_partition  = var.aws_partition
   })
+  tags = {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "96c653c3-ca6a-4db9-a6e2-f974154a3cd8"
+  }
 }
 
 resource "aws_iam_policy" "deploy" {
@@ -28,6 +36,10 @@ resource "aws_iam_policy" "deploy" {
   policy = templatefile("${path.module}/policies/deploy-policy.json", {
     account_id = data.aws_caller_identity.current.account_id
   })
+  tags = {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "e7f3e9a5-c674-4499-bf35-2b5de3df93ab"
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "deploy" {
@@ -48,4 +60,8 @@ resource "aws_iam_policy" "deploy_boundary" {
     permission_boundary        = aws_iam_policy.boundary.arn
     aws_partition              = var.aws_partition
   })
+  tags = {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "b93a3f05-dfb5-4998-9004-219701664dd2"
+  }
 }

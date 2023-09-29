@@ -17,6 +17,10 @@ data "terraform_remote_state" "iam" {
 
 resource "aws_kms_key" "github" {
   is_enabled = true
+  tags = {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "4f0d30cb-a99b-4353-af29-91cd0104bf2f"
+  }
 }
 
 resource "aws_kms_alias" "github" {

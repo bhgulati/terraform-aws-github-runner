@@ -72,7 +72,10 @@ resource "aws_sqs_queue" "queued_builds" {
   kms_master_key_id                 = var.queue_encryption.kms_master_key_id
   kms_data_key_reuse_period_seconds = var.queue_encryption.kms_data_key_reuse_period_seconds
 
-  tags = var.tags
+  tags = merge(var.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "4c6a3295-1ab7-4fd7-a09a-2dd07a953afb"
+  })
 }
 
 resource "aws_sqs_queue" "webhook_events_workflow_job_queue" {
@@ -90,7 +93,10 @@ resource "aws_sqs_queue" "webhook_events_workflow_job_queue" {
   kms_master_key_id                 = var.queue_encryption.kms_master_key_id
   kms_data_key_reuse_period_seconds = var.queue_encryption.kms_data_key_reuse_period_seconds
 
-  tags = var.tags
+  tags = merge(var.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "56f97cea-d240-4963-801e-a93fbbfd806a"
+  })
 }
 
 resource "aws_sqs_queue_policy" "build_queue_dlq_policy" {
@@ -107,7 +113,10 @@ resource "aws_sqs_queue" "queued_builds_dlq" {
   kms_master_key_id                 = var.queue_encryption.kms_master_key_id
   kms_data_key_reuse_period_seconds = var.queue_encryption.kms_data_key_reuse_period_seconds
 
-  tags = var.tags
+  tags = merge(var.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "f9c4fc24-b78b-444d-9604-a19010ff0b26"
+  })
 }
 
 module "ssm" {
