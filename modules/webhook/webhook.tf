@@ -26,14 +26,20 @@ resource "aws_lambda_function" "webhook" {
     }
   }
 
-  tags = var.tags
+  tags = merge(var.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "d493c0dc-5f99-41cd-9830-2a29fac048dc"
+  })
 }
 
 resource "aws_cloudwatch_log_group" "webhook" {
   name              = "/aws/lambda/${aws_lambda_function.webhook.function_name}"
   retention_in_days = var.logging_retention_in_days
   kms_key_id        = var.logging_kms_key_id
-  tags              = var.tags
+  tags = merge(var.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "47497f0b-d1bf-49e5-9f04-d5a58b37a219"
+  })
 }
 
 resource "aws_lambda_permission" "webhook" {
@@ -60,7 +66,10 @@ resource "aws_iam_role" "webhook_lambda" {
   assume_role_policy   = data.aws_iam_policy_document.lambda_assume_role_policy.json
   path                 = local.role_path
   permissions_boundary = var.role_permissions_boundary
-  tags                 = var.tags
+  tags = merge(var.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "3326cd99-ad33-4339-9c4a-5a6093164ba2"
+  })
 }
 
 resource "aws_iam_role_policy" "webhook_logging" {

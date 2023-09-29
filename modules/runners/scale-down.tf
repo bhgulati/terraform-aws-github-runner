@@ -16,9 +16,12 @@ resource "aws_lambda_function" "scale_down" {
   handler           = "index.scaleDownHandler"
   runtime           = var.lambda_runtime
   timeout           = var.lambda_timeout_scale_down
-  tags              = local.tags
-  memory_size       = 512
-  architectures     = [var.lambda_architecture]
+  tags = merge(local.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "2ab222db-4ec9-4427-b071-67b3ee3412c9"
+  })
+  memory_size   = 512
+  architectures = [var.lambda_architecture]
 
   environment {
     variables = {
@@ -48,13 +51,19 @@ resource "aws_cloudwatch_log_group" "scale_down" {
   name              = "/aws/lambda/${aws_lambda_function.scale_down.function_name}"
   retention_in_days = var.logging_retention_in_days
   kms_key_id        = var.logging_kms_key_id
-  tags              = var.tags
+  tags = merge(var.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "20566f74-c37c-48ed-b95b-f1723a804825"
+  })
 }
 
 resource "aws_cloudwatch_event_rule" "scale_down" {
   name                = "${var.prefix}-scale-down-rule"
   schedule_expression = var.scale_down_schedule_expression
-  tags                = var.tags
+  tags = merge(var.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "bf27d9b0-2063-47d7-82e8-01cbdea9e611"
+  })
 }
 
 resource "aws_cloudwatch_event_target" "scale_down" {
@@ -75,7 +84,10 @@ resource "aws_iam_role" "scale_down" {
   assume_role_policy   = data.aws_iam_policy_document.lambda_assume_role_policy.json
   path                 = local.role_path
   permissions_boundary = var.role_permissions_boundary
-  tags                 = local.tags
+  tags = merge(local.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "9ae0fbd5-afc5-4924-81f0-c3d18fa6954c"
+  })
 }
 
 resource "aws_iam_role_policy" "scale_down" {

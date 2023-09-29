@@ -151,7 +151,10 @@ resource "aws_launch_template" "runner" {
     ssm_key_cloudwatch_agent_config = var.enable_cloudwatch_agent ? aws_ssm_parameter.cloudwatch_agent_config_runner[0].name : ""
   })) : ""
 
-  tags = local.tags
+  tags = merge(local.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "cdaa5b10-6d75-4bf9-92f9-dde1ee477ef8"
+  })
 
   update_default_version = true
 }
@@ -185,5 +188,8 @@ resource "aws_security_group" "runner_sg" {
     {
       "Name" = format("%s", local.name_sg)
     },
-  )
+    {
+      git_repo  = "terraform-aws-github-runner"
+      yor_trace = "2ce4b3b4-bede-4a82-a09e-2dfdf15495b8"
+  })
 }

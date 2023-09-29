@@ -11,8 +11,11 @@ resource "aws_lambda_function" "scale_up" {
   timeout                        = var.lambda_timeout_scale_up
   reserved_concurrent_executions = var.scale_up_reserved_concurrent_executions
   memory_size                    = 512
-  tags                           = local.tags
-  architectures                  = [var.lambda_architecture]
+  tags = merge(local.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "ff9022a1-af33-4e22-9d83-5fd0462dec3d"
+  })
+  architectures = [var.lambda_architecture]
 
   environment {
     variables = {
@@ -53,7 +56,10 @@ resource "aws_cloudwatch_log_group" "scale_up" {
   name              = "/aws/lambda/${aws_lambda_function.scale_up.function_name}"
   retention_in_days = var.logging_retention_in_days
   kms_key_id        = var.logging_kms_key_id
-  tags              = var.tags
+  tags = merge(var.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "e069872d-07cf-4019-a881-23a9256edd3c"
+  })
 }
 
 resource "aws_lambda_event_source_mapping" "scale_up" {
@@ -75,7 +81,10 @@ resource "aws_iam_role" "scale_up" {
   assume_role_policy   = data.aws_iam_policy_document.lambda_assume_role_policy.json
   path                 = local.role_path
   permissions_boundary = var.role_permissions_boundary
-  tags                 = local.tags
+  tags = merge(local.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "3afe7636-755f-4d05-a6e2-c1cde706e187"
+  })
 }
 
 resource "aws_iam_role_policy" "scale_up" {

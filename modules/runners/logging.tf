@@ -47,7 +47,10 @@ resource "aws_ssm_parameter" "cloudwatch_agent_config_runner" {
   value = var.cloudwatch_config != null ? var.cloudwatch_config : templatefile("${path.module}/templates/cloudwatch_config.json", {
     logfiles = jsonencode(local.logfiles)
   })
-  tags = local.tags
+  tags = merge(local.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "9ba31ce0-921c-413e-aa29-1149520e4b8b"
+  })
 }
 
 resource "aws_cloudwatch_log_group" "gh_runners" {
@@ -55,7 +58,10 @@ resource "aws_cloudwatch_log_group" "gh_runners" {
   name              = local.loggroups_names[count.index]
   retention_in_days = var.logging_retention_in_days
   kms_key_id        = var.logging_kms_key_id
-  tags              = local.tags
+  tags = merge(local.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "c5378df6-2ecb-4c2a-8215-ba63258b5ef3"
+  })
 }
 
 resource "aws_iam_role_policy" "cloudwatch" {

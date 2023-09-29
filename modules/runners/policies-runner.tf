@@ -5,13 +5,20 @@ resource "aws_iam_role" "runner" {
   assume_role_policy   = templatefile("${path.module}/policies/instance-role-trust-policy.json", {})
   path                 = local.role_path
   permissions_boundary = var.role_permissions_boundary
-  tags                 = local.tags
+  tags = merge(local.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "92f06ee5-6308-4a6f-9deb-c61bf20fc169"
+  })
 }
 
 resource "aws_iam_instance_profile" "runner" {
   name = "${var.prefix}-runner-profile"
   role = aws_iam_role.runner.name
   path = local.instance_profile_path
+  tags = {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "ff92aa72-1752-4944-bf28-a36df0a92719"
+  }
 }
 
 resource "aws_iam_role_policy" "runner_session_manager_aws_managed" {

@@ -13,7 +13,10 @@ resource "aws_lambda_function" "pool" {
   timeout                        = var.config.lambda.timeout
   reserved_concurrent_executions = var.config.lambda.reserved_concurrent_executions
   memory_size                    = 512
-  tags                           = var.config.tags
+  tags = merge(var.config.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "df1a9cd9-e4e8-493e-9098-4eb351638cb5"
+  })
 
   environment {
     variables = {
@@ -51,7 +54,10 @@ resource "aws_cloudwatch_log_group" "pool" {
   name              = "/aws/lambda/${aws_lambda_function.pool.function_name}"
   retention_in_days = var.config.lambda.logging_retention_in_days
   kms_key_id        = var.config.lambda.logging_kms_key_id
-  tags              = var.config.tags
+  tags = merge(var.config.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "b67a8eb7-70d3-49dd-ad95-7fc94de43281"
+  })
 }
 
 resource "aws_iam_role" "pool" {
@@ -59,7 +65,10 @@ resource "aws_iam_role" "pool" {
   assume_role_policy   = data.aws_iam_policy_document.lambda_assume_role_policy.json
   path                 = var.config.role_path
   permissions_boundary = var.config.role_permissions_boundary
-  tags                 = var.config.tags
+  tags = merge(var.config.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "90a15a92-03b1-4225-b1c7-b696724cec3b"
+  })
 }
 
 resource "aws_iam_role_policy" "pool" {
@@ -104,7 +113,10 @@ resource "aws_cloudwatch_event_rule" "pool" {
 
   name                = "${var.config.prefix}-pool-${count.index}-rule"
   schedule_expression = var.config.pool[count.index].schedule_expression
-  tags                = var.config.tags
+  tags = merge(var.config.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "a3dd1803-887b-4e75-871c-5abd8143b7d1"
+  })
 }
 
 resource "aws_cloudwatch_event_target" "pool" {

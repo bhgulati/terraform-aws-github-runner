@@ -5,7 +5,10 @@ locals {
 resource "aws_s3_bucket" "action_dist" {
   bucket        = var.distribution_bucket_name
   force_destroy = true
-  tags          = var.tags
+  tags = merge(var.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "e6a3033e-1e54-4eb2-b446-b60c643f4c8f"
+  })
 }
 
 resource "aws_s3_bucket_acl" "action_dist_acl" {

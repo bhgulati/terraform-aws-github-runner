@@ -42,7 +42,10 @@ resource "aws_lambda_function" "syncer" {
     }
   }
 
-  tags = var.tags
+  tags = merge(var.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "a1b456c4-e2da-4f35-966d-bfa7d0a170ce"
+  })
 }
 
 resource "aws_iam_role_policy" "lambda_kms" {
@@ -59,7 +62,10 @@ resource "aws_cloudwatch_log_group" "syncer" {
   name              = "/aws/lambda/${aws_lambda_function.syncer.function_name}"
   retention_in_days = var.logging_retention_in_days
   kms_key_id        = var.logging_kms_key_id
-  tags              = var.tags
+  tags = merge(var.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "b7b1f2b0-be1b-4bae-b2ca-cf8f27ebdd4b"
+  })
 }
 
 resource "aws_iam_role" "syncer_lambda" {
@@ -68,7 +74,10 @@ resource "aws_iam_role" "syncer_lambda" {
   path                 = local.role_path
   permissions_boundary = var.role_permissions_boundary
 
-  tags = var.tags
+  tags = merge(var.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "cee24805-b5b8-472b-aed2-d821ff52b008"
+  })
 }
 
 data "aws_iam_policy_document" "lambda_assume_role_policy" {
@@ -112,7 +121,10 @@ resource "aws_iam_role_policy" "syncer" {
 resource "aws_cloudwatch_event_rule" "syncer" {
   name                = "${var.prefix}-syncer-rule"
   schedule_expression = var.lambda_schedule_expression
-  tags                = var.tags
+  tags = merge(var.tags, {
+    git_repo  = "terraform-aws-github-runner"
+    yor_trace = "1a1b2d12-9c38-4b76-a24f-a81e9369cd44"
+  })
 }
 
 resource "aws_cloudwatch_event_target" "syncer" {
